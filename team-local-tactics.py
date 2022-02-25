@@ -5,6 +5,7 @@ from rich.table import Table
 from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
 
+#heisann og hoppsann
 #testing branch ffff
 def print_available_champs(champions: dict[Champion]) -> None:
 
