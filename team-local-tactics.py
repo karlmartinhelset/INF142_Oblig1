@@ -4,6 +4,13 @@ from rich.table import Table
 
 from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+port = 80
+ip = socket.gethostbyname('www.google.com')
+
+s.connect((ip, port))
 
 #testing branch ffff
 def print_available_champs(champions: dict[Champion]) -> None:
