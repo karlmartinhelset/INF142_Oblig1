@@ -1,5 +1,5 @@
 import socket
-print('heihei')
+
 class PlayerClient:
     
     def __init__(self):
@@ -8,14 +8,14 @@ class PlayerClient:
         self.server = socket.gethostbyname(socket.gethostname())
         self.port = 5550
         self.addr = (self.server, self.port)
-        self.pos = self.connect()
+        self.p = self.connect()
+        print(self.p)
     
-    def getPos(self):
-        return self.pos
+    def getP(self):
+        return self.p
 
     def connect(self):
         try:
-            #self.client.connect(socket.gethostbyname("localhost"), self.port)
             self.client.connect((self.server, self.port))
             return self.client.recv(2048).decode()
         except:
@@ -29,4 +29,6 @@ class PlayerClient:
             print(e)
 
 
-
+pc = PlayerClient()
+print(pc.send("hello"))
+print(pc.send("working"))
