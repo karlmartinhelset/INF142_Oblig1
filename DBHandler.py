@@ -7,6 +7,8 @@ load_dotenv()
 import os
 import certifi
 
+from core import Champion
+
 # Function to get the database 
 def get_database():
 
@@ -24,28 +26,30 @@ def get_database():
   return database
 
 
-def get_collection(collection):
-  db = get_database()
-  return db[collection]
+Champ_collection = get_database()["Champions_collection"]
+Match_collection = get_database()["Match_history_collection"]
 
 
 
 # Champions
 
 def add_new_champ(champion):
-  collection = get_collection("Champions_collection")
-  collection.insert_one(champion)
+  Champ_collection.insert_one(champion)
 
 
-#def get_champs():
+def get_champs():
+    all_champions = {} 
+    for x in Champ_collection.find():
+        champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorProbability"]))
+        all_champions[x["Name"]] = champion
+    return all_champions
 
 
 
 # Match history
 
 def add_new_match(match):
-    collection = get_collection("Match_history_collection")
-    collection.insert_one(match)
+    Match_collection.insert_one(match)
 
 
 #def get_match_history():
