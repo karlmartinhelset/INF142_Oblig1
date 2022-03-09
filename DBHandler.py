@@ -9,36 +9,41 @@ import certifi
 def get_database():
 
   # Get you password from .env file
-  password = os.getenv("password")
+  password = os.getenv("PASSWORD")
 
   username = "hannahmorken"
   clusterName = "Oblig1142Cluster"
 
   # Connect to you cluster
-  client = MongoClient('mongodb+srv://' + username + ':' + password + '@Oblig1142Cluster.clrn2.mongodb.net/INF142', tlsCAFile=certifi.where())
+  client = MongoClient("mongodb+srv://hannahmorken:" + password + "@Oblig1142Cluster.clrn2.mongodb.net/TeamNetworkTactics", tlsCAFile=certifi.where())
 
   # Create a new database in your cluster
-  database = client["Team Network Tactics"]
+  database = client["TeamNetworkTactics"]
   return database
 
 
 def get_collection(collection):
   db = get_database()
-  collection_name = db[collection]
+  return db[collection]
 
 
 
 # Champions
 
 def add_new_champ(champion):
-  get_collection("Champions_collection")
-  collection_name.insert_one(champion)
+  collection = get_collection("Champions_collection")
+  collection.insert_one(champion)
 
 
-def get_champions():
+#def get_champs():
 
 
 
 # Match history
 
-def get_match_history():
+def add_new_match(match):
+    collection = get_collection("Match_history_collection")
+    collection.insert_one(match)
+
+
+#def get_match_history():
