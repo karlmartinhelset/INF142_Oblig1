@@ -17,28 +17,28 @@ from rich.table import Table
 class server:
     
     def __init__(self, host: str, port: int):
-        self._host = host
-        self._port = port
-        self._connections = []
+        self.host = host
+        self.port = port
+        self.connections = []
 
     def turn_on(self):
-        self._sock = create_server((self.host, self.port), reuse_port=True)
+        self.sock = create_server((host, port), reuse_port=True)
 
         #self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.sock.bind((self.host, self.port))
         #self.sock.listen()
 
-        self._serving = True
+        self.serving = True
         self.accept_conn()
 
         print("Looking for connection")
 
 
     def turn_off(self):
-        self._sock.close()
-        self._serving = False
+        self.sock.close()
+        self.serving = False
 
-"""
+    """
     def threaded_client(conn):
         conn.send(str.encode("Connected"))
         reply = ""
@@ -63,15 +63,15 @@ class server:
         
         print('Lost connection')
         conn.close()
-"""
+    """
 
     def accept_conn(self):
-        while self._serving:
+        while self.serving:
             try:
-                conn, _ = self._sock.accept()
+                conn, _ = self.sock.accept()
             except:
                 pass
-            self._connections.append(conn)
+            self.connections.append(conn)
 
             match len(self.connections):
                 case 1:
@@ -84,16 +84,16 @@ class server:
 
 
     def send_everyone(self, message):
-        for connection in self._connections:
+        for connection in self.connections:
             connection.send(pickle.dumps(message))
 
 
     def run_game(self):
         welcome_message = '\n'
-          'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
-          '\n'
-          'Each player choose a champion each time.'
-          '\n'
+        'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
+        '\n'
+        'Each player choose a champion each time.'
+        '\n'
         self.send_everyone(welcome_message)
 
         champions = DBHandler.get_champs()
@@ -103,14 +103,14 @@ class server:
 
 
 
-"""
-    while True:
+    """
+    while True: 
         
         print("Connected to: ", addr)
         start_new_thread(threaded_client, (conn,))
-"""
+    """
 
-if __name__=="__main__":
+if __name__ == "__main__":
     host = socket.gethostbyname(socket.gethostname())
     port = 5550
     server = server(host, port)
