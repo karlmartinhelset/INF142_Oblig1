@@ -3,6 +3,7 @@ import socket
 from socket import create_server
 import threading
 from _thread import *
+from unittest.main import main
 
 import teamlocaltactics 
 import DBHandler
@@ -22,7 +23,7 @@ class server:
         self.connections = []
 
     def turn_on(self):
-        self.sock = create_server((host, port), reuse_port=True)
+        self.sock = create_server((self.host, self.port), reuse_port=True)
 
         #self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.sock.bind((self.host, self.port))
@@ -37,33 +38,6 @@ class server:
     def turn_off(self):
         self.sock.close()
         self.serving = False
-
-    """
-    def threaded_client(conn):
-        conn.send(str.encode("Connected"))
-        reply = ""
-        while True:
-            try:
-                data = conn.recv(2048)
-                reply = data.decode("utf-8")
-                print(reply)
-                print(data)
-
-                if not data:
-                    print("Disconnected")
-                    break
-                else:
-                    print("Received: ", reply)
-                    print("Sending: ", reply)
-
-                conn.sendall(str.encode(reply))
-            
-            except:
-                break
-        
-        print('Lost connection')
-        conn.close()
-    """
 
     def accept_conn(self):
         while self.serving:
@@ -100,15 +74,13 @@ class server:
         table = teamlocaltactics.print_available_champs(champions)
         self.send_everyone(table)
 
+    # def main_server(self):
+    #     host = socket.gethostbyname(socket.gethostname())
+    #     port = 5550
+    #     server = server(host, port)
+    #     server.turn_on()
+    #     server.turn_off()
 
-
-
-    """
-    while True: 
-        
-        print("Connected to: ", addr)
-        start_new_thread(threaded_client, (conn,))
-    """
 
 if __name__ == "__main__":
     host = socket.gethostbyname(socket.gethostname())
