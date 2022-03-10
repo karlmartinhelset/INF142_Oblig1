@@ -1,5 +1,5 @@
 import socket
-print(socket.gethostbyname(socket.gethostname()))
+
 class PlayerClient:
     
     def __init__(self, host, port):
@@ -13,6 +13,8 @@ class PlayerClient:
     def turn_on(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((self.server, self.port))
+    
+    def turn_off(self):
         
     
     def send(self):
@@ -34,8 +36,7 @@ class PlayerClient:
     #         pass
     
 
-
-
-pc = PlayerClient()
-print(pc.send("hello"))
-print(pc.send("working"))
+if __name__ == "__main__":
+    host = socket.gethostbyname(socket.gethostname())
+    port = 5550
+    pc = PlayerClient(host, port)
