@@ -2,7 +2,7 @@
 import socket
 import pickle
 
-from teamlocaltactics import main
+import teamlocaltactics as tlt
 
 class PlayerClient:
     
@@ -20,7 +20,7 @@ class PlayerClient:
     def turn_off(self):
         self.client.close
     
-    def send_recv(self):
+    def get_msg(self):
         while True:
             data = self.client.recv(2048).decode()
 
@@ -30,6 +30,18 @@ class PlayerClient:
 
             else:
                 continue
+
+            match data["MSG"]:
+                case "WELCOME":
+                    print('\n'
+        'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
+        '\n'
+        'Each player choose a champion each time.'
+        '\n')
+
+                case "GET_CHAMPS":
+
+                
 
     # def main_client():
     #     host = socket.gethostbyname(socket.gethostname())

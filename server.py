@@ -61,21 +61,21 @@ class server:
 
 
     def run_game(self):
-        welcome_message = '\n'
-        'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
-        '\n'
-        'Each player choose a champion each time.'
-        '\n'
+        data = {
+            "MSG": "WELCOME"
+        }
         # send message to each client
-        self.send_everyone(welcome_message)
+        self.send_everyone(data)
 
         # fetch champions from database
         self.champions = DBHandler.get_champs()
         # create a table containing the champions
-        table = teamlocaltactics.print_available_champs(self.champions)
+        data = {
+            "MSG": "GET_CHAMPS"
+            "champs": self.champions
+        }
         # send table to each client
-        self.send_everyone(table)
-        print(table)
+        self.send_everyone(data)
 
         # get players
         # ask client for player teams
