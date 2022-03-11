@@ -26,6 +26,8 @@ class PlayerClient:
 
             if data:
                 data = pickle.loads(data)
+                print(data)
+
             else:
                 continue
 
@@ -38,6 +40,7 @@ class PlayerClient:
 
 if __name__ == "__main__":
     host = socket.gethostbyname(socket.gethostname())
+    print(host)
     port = 5550
     pc = PlayerClient(host, port)
     pc.start_client()
