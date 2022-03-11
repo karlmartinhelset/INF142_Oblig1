@@ -1,8 +1,6 @@
 import socket
 #from threading import Lock, Thread
 from socket import create_server
-import threading
-from _thread import *
 from unittest.main import main
 
 import teamlocaltactics 
@@ -23,16 +21,16 @@ class server:
         self.connections = []
 
     def turn_on(self):
-        self.sock = create_server((self.host, self.port), reuse_port=True)
+        #self.sock = create_server((self.host, self.port), reuse_port=True)
 
-        #self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #self.sock.bind((self.host, self.port))
-        #self.sock.listen()
-
-        self.serving = True
-        self.accept_conn()
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.bind((self.host, self.port))
+        self.sock.listen()
 
         print("Looking for connection")
+        self.serving = True
+        #self.accept_conn()
+        self.run_game()
 
 
     def turn_off(self):
@@ -73,6 +71,7 @@ class server:
         champions = DBHandler.get_champs()
         table = teamlocaltactics.print_available_champs(champions)
         self.send_everyone(table)
+        #print(table)
 
     # def main_server(self):
     #     host = socket.gethostbyname(socket.gethostname())
@@ -84,6 +83,7 @@ class server:
 
 if __name__ == "__main__":
     host = socket.gethostbyname(socket.gethostname())
+    print(host)
     port = 5550
     server = server(host, port)
     server.turn_on()
