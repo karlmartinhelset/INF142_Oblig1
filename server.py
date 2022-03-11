@@ -66,12 +66,29 @@ class server:
         '\n'
         'Each player choose a champion each time.'
         '\n'
+        # send message to each client
         self.send_everyone(welcome_message)
 
-        champions = DBHandler.get_champs()
-        table = teamlocaltactics.print_available_champs(champions)
+        # fetch champions from database
+        self.champions = DBHandler.get_champs()
+        # create a table containing the champions
+        table = teamlocaltactics.print_available_champs(self.champions)
+        # send table to each client
         self.send_everyone(table)
-        #print(table)
+        print(table)
+
+        # get players
+        # ask client for player teams
+        # get the teams from client
+        #for in range(2):
+
+        # create match from the match class with the two teams
+        # play match. Use match.play()
+
+        # get match result from team_local_tactics.print_match_summary(match)
+        # send result to client
+
+        # upload match result to database
 
     # def main_server(self):
     #     host = socket.gethostbyname(socket.gethostname())
