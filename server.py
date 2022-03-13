@@ -9,10 +9,8 @@ import DBHandler
 import pickle
 
 from rich import print
-from rich.prompt import Prompt
-from rich.table import Table
 
-from core import Match
+from core import Match, Team
 
 
 class server:
