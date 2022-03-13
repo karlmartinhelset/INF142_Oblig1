@@ -81,12 +81,14 @@ class DBHandler:
     Champ_collection.insert_one(champion)
 
 
+
   def get_champs(self):
     all_champions = {} 
     for x in Champ_collection.find():
         champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorsProbability"]))
         all_champions[x["Name"]] = champion
     return all_champions
+
 
   # Match history
 
@@ -98,8 +100,10 @@ class DBHandler:
     matchList = Match_collection.find({}).limit(nMatches)
     return matchList
 
+
 if __name__ == "__main__":
   server = os.environ.get("SERVER", "localhost")
   port = 7020
   serv = DBServer(server, port)
   serv.start()
+

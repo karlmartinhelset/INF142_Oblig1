@@ -3,6 +3,9 @@
 from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
 
+from rich.prompt import Prompt
+from rich.table import Table
+
 #testing branch ffff
 def print_available_champs(champions: dict[Champion]) -> None:
 
