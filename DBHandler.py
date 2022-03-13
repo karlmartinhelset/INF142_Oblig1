@@ -1,7 +1,4 @@
-import pymongo
 from pymongo import MongoClient
-from flask import Flask, render_template
-from flask_pymongo import PyMongo
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -78,6 +75,7 @@ def get_match_history(nMatches):
   matchList = Match_collection.find({}).limit(nMatches)
   return matchList
 
+<<<<<<< HEAD
 
 
 #Flask
@@ -100,3 +98,5 @@ def Champions():
 
 if __name__=='__main__':
       app.run()
+=======
+>>>>>>> be0445434477ad7a670fd441c0f9358e63073d4e

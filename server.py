@@ -9,8 +9,6 @@ import DBHandler
 import pickle
 
 from rich import print
-from rich.prompt import Prompt
-from rich.table import Table
 
 from core import Match, Team
 
@@ -26,7 +24,7 @@ class server:
 
     def turn_on(self):
         #self.sock = create_server((self.host, self.port), reuse_port=True)
-
+        
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
         

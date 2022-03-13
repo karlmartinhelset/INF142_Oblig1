@@ -4,8 +4,30 @@
         <meta charset="utf-8">
         <title>Champions</title>
         <link rel="stylesheet" href="">
+        <style>
+            table,th,
+            td {
+            border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <h1>Champions:</h1>
+        <table>
+            <tr>
+            <th>Name</th>
+            <th>Rock</th>
+            <th>Paper</th>
+            <th>Scissor</th>
+            </tr>
+            {% for champions in champions %}
+            <tr>
+            <td>{{ champions['Name']}}</td>
+            <td>{{ champions['rockProbability']}}%</td>
+            <td>{{ champions['paperProbability']}}%</td>
+            <td>{{ champions['scissorsProbability']}}%</td>
+            </tr>
+            {% endfor %}
+        </table>
     </body>
 </html>
