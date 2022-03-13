@@ -59,18 +59,3 @@ def add_new_match(match):
 app = Flask(__name__)
 #app.config["MONGO_URI"] = "mongodb+srv://hannahmorken:5550"
 #mongo = PyMongo(app)
-
-@app.route('/')
-def index():
-  return render_template('index.html')
-
-@app.route('/Match_History/')
-def Match_History():
-  return render_template('Match_History.html')
-
-@app.route('/Champions/')
-def Champions():
-  return render_template('Champions.html')
-
-if __name__=='__main__':
-      app.run()
