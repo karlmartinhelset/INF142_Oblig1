@@ -16,6 +16,8 @@ class PlayerClient:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((self.server, self.port))
         self.send_recv()
+
+        self.get_msg()
     
     def turn_off(self):
         self.client.close
@@ -34,12 +36,21 @@ class PlayerClient:
             match data["MSG"]:
                 case "WELCOME":
                     print('\n'
-        'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
-        '\n'
-        'Each player choose a champion each time.'
-        '\n')
+                    'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
+                    '\n'
+                    'Each player choose a champion each time.'
+                    '\n')
 
                 case "GET_CHAMPS":
+                    tlt.print_available_champs(data["champs"])
+
+                case "CHOOSE_CHAMP":
+                    champ = tlt.input_champion(data["player"], data["color"], data["champs"], data["team1"], data["team2"])
+                    self.client.send(pickle.dumps(champ))
+                
+                case "PRINT_MATCH":
+                    tlt.print_match_summary(data["Value"])
+
 
                 
 
@@ -51,9 +62,8 @@ class PlayerClient:
     #     pc.turn_off()
 
 if __name__ == "__main__":
-    host = socket.gethostbyname(socket.gethostname())
-    print(host)
+    #host = socket.gethostbyname(socket.gethostname())
     port = 5550
-    pc = PlayerClient(host, port)
+    pc = PlayerClient("10.111.37.88", port)
     pc.start_client()
     pc.turn_off()
