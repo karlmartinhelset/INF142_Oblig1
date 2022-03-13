@@ -3,9 +3,24 @@
     <head>
         <meta charset="utf-8">
         <title>Match History</title>
-        <link rel="stylesheet" href="">
+        <style>
+            table,th,
+            td {
+            border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <h1>Match History:</h1>
+        <table>
+            <tr>
+            <th></th>
+            </tr>
+            {% for match in match %}
+            <tr>
+            <td>{{ champions['Name']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </body>
 </html>

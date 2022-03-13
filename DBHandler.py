@@ -1,7 +1,4 @@
-import pymongo
 from pymongo import MongoClient
-from flask import Flask, render_template
-from flask_pymongo import PyMongo
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -56,23 +53,3 @@ def get_match_history(nMatches):
   matchList = Match_collection.find({}).limit(nMatches)
   return matchList
 
-#Flask
-#This is so that we can see the information from MongoDB on a webpage
-app = Flask(__name__)
-#app.config["MONGO_URI"] = "mongodb+srv://hannahmorken:5550"
-#mongo = PyMongo(app)
-
-@app.route('/')
-def index():
-  return render_template('index.html')
-
-@app.route('/Match_History/')
-def Match_History():
-  return render_template('Match_History.html')
-
-@app.route('/Champions/')
-def Champions():
-  return render_template('Champions.html')
-
-if __name__=='__main__':
-      app.run()

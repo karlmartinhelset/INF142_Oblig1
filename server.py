@@ -26,7 +26,11 @@ class server:
 
     def turn_on(self):
         #self.sock = create_server((self.host, self.port), reuse_port=True)
+<<<<<<< HEAD
+        
+=======
 
+>>>>>>> main
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
         self.sock.listen()
