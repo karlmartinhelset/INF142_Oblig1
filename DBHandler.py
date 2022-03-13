@@ -1,7 +1,4 @@
-import pymongo
 from pymongo import MongoClient
-from flask import Flask, render_template
-from flask_pymongo import PyMongo
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -38,24 +35,21 @@ def add_new_champ(champion):
 
 
 def get_champs():
-    all_champions = {} 
-    for x in Champ_collection.find():
-        champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorProbability"]))
-        all_champions[x["Name"]] = champion
-    return all_champions
+  all_champions = {} 
+  for x in Champ_collection.find():
+      champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorProbability"]))
+      all_champions[x["Name"]] = champion
+  return all_champions
 
 
 
 # Match history
 
 def add_new_match(match):
-    Match_collection.insert_one(match)
+  Match_collection.insert_one(match)
 
 
-#def get_match_history():
+def get_match_history(nMatches):
+  matchList = Match_collection.find({}).limit(nMatches)
+  return matchList
 
-#Flask
-#This is so that we can see the information from MongoDB on a webpage
-app = Flask(__name__)
-#app.config["MONGO_URI"] = "mongodb+srv://hannahmorken:5550"
-#mongo = PyMongo(app)
