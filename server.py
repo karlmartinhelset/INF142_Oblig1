@@ -23,11 +23,11 @@ class server:
         self.connections = []
 
     def turn_on(self):
-        self.sock = create_server((self.host, self.port), reuse_port=True)
-
-        #self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #self.sock.bind((self.host, self.port))
-        #self.sock.listen()
+        #self.sock = create_server((self.host, self.port), reuse_port=True)
+        
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.bind((self.host, self.port))
+        self.sock.listen()
 
         self.serving = True
         self.accept_conn()
