@@ -38,21 +38,23 @@ def add_new_champ(champion):
 
 
 def get_champs():
-    all_champions = {} 
-    for x in Champ_collection.find():
-        champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorProbability"]))
-        all_champions[x["Name"]] = champion
-    return all_champions
+  all_champions = {} 
+  for x in Champ_collection.find():
+      champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorProbability"]))
+      all_champions[x["Name"]] = champion
+  return all_champions
 
 
 
 # Match history
 
 def add_new_match(match):
-    Match_collection.insert_one(match)
+  Match_collection.insert_one(match)
 
 
-#def get_match_history():
+def get_match_history(nMatches):
+  matchList = Match_collection.find({}).limit(nMatches)
+  return matchList
 
 #Flask
 #This is so that we can see the information from MongoDB on a webpage
