@@ -29,7 +29,31 @@ def get_database():
 Champ_collection = get_database()["Champions_collection"]
 Match_collection = get_database()["Match_history_collection"]
 
+def get_msg():
+  while True:
+    for conn in self._connections:
+      # Try to recv data
+      data = conn.recv(self._buffer_size)
 
+      # Continue if no data
+      if not data:
+        continue
+
+      # Load data with pickle
+      data = pickle.loads(data)
+
+      # Match commands
+      match data["CMD"]:
+        case "ADDCHAMP":
+          add_new_champ(data["Value"])
+        case "GETALLCHAMPS":
+          champs = get_champs()
+          conn.send(pickle.dumps(champs))
+        case "UPLOADMATCH":
+          add_new_match(data["Value"])
+        case "GETMATCHES":
+          matches = getMatchHistory(data["Value"])
+          conn.send(pickle.dumps(matches))
 
 # Champions
 
@@ -40,11 +64,9 @@ def add_new_champ(champion):
 def get_champs():
   all_champions = {} 
   for x in Champ_collection.find():
-      champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorProbability"]))
+      champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorsProbability"]))
       all_champions[x["Name"]] = champion
   return all_champions
-
-
 
 # Match history
 
@@ -55,6 +77,8 @@ def add_new_match(match):
 def get_match_history(nMatches):
   matchList = Match_collection.find({}).limit(nMatches)
   return matchList
+
+
 
 #Flask
 #This is so that we can see the information from MongoDB on a webpage

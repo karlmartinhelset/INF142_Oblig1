@@ -12,7 +12,7 @@ from rich import print
 from rich.prompt import Prompt
 from rich.table import Table
 
-from core import Match
+from core import Match, Team
 
 
 class server:
@@ -29,8 +29,13 @@ class server:
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
-        self.sock.listen()
+        
 
+        print("hei")
+        
+        self.DB_sock = socket.create_connection((self.host, 7020))
+        
+        self.sock.listen()
         print("Looking for connection")
         self.serving = True
         self.accept_conn()
@@ -38,6 +43,7 @@ class server:
 
     def turn_off(self):
         self.sock.close()
+        self.DB_sock.close()
         self.serving = False
         print("Server is closed")
 
@@ -105,12 +111,20 @@ class server:
         # send message to each client
         self.send_everyone(data)
 
+        DBdata = {
+            "CMD": "GETALLCHAMPS"
+        }
+
+        # Ask the database connection to recieve all champions
+        self._DB_sock.send(pickle.dumps(DBdata))
+        self._champions = pickle.loads(self._DB_sock.recv(2048))
+
         # fetch champions from database
-        self.champions = DBHandler.get_champs()
+        #self.champions = DBHandler.get_champs()
         # create a table containing the champions
         data = {
             "MSG": "GET_CHAMPS",
-            "champs": self.champions
+            "champs": self.champDict
         }
         # send table to each client
         self.send_everyone(data)
@@ -140,6 +154,9 @@ class server:
 
         # upload match result to database
         DBHandler.add_new_match(match)
+
+        self.send_everyone(match)
+        self.DB_sock.send(pickle.dumps(match))
 
     # def main_server(self):
     #     host = socket.gethostbyname(socket.gethostname())

@@ -15,23 +15,22 @@ class PlayerClient:
     def start_client(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((self.server, self.port))
-        self.send_recv()
 
         self.get_msg()
     
     def turn_off(self):
         self.client.close
+        print("Closed connection to server.")
     
     def get_msg(self):
         while True:
-            data = self.client.recv(2048).decode()
+            data = self.client.recv(4098).decode()
 
-            if data:
-                data = pickle.loads(data)
-                print(data)
-
-            else:
+            if not data:
                 continue
+
+            data = pickle.loads(data)
+            print(data)
 
             match data["MSG"]:
                 case "WELCOME":
