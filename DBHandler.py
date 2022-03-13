@@ -22,7 +22,7 @@ def get_database():
   client = MongoClient("mongodb+srv://hannahmorken:" + password + "@Oblig1142Cluster.clrn2.mongodb.net/TeamNetworkTactics", tlsCAFile=certifi.where())
 
   # Create a new database in your cluster
-  database = client["TeamNetworkTactics"]#.get_database(clusterName)
+  database = client["TeamNetworkTactics"]
   return database
 
 
