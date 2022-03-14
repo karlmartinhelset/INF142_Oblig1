@@ -23,15 +23,17 @@ class DBHandler:
 
   def start(self):
     self._serv_sock = create_server((self._host, self._port))
+    #self._serv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #self._serv_sock.bind((self._host, self._port))
     while True:
       try:
         conn, _ = self._serv_sock.accept()
       except:
         pass 
       else:
-        # Add connection to list
+        
         self._connections.append(conn)
-        # Start listening
+        
         self.get_msg()
 
 
@@ -57,17 +59,14 @@ class DBHandler:
   def get_msg(self):
     while True:
       for conn in self._connections:
-        # Try to recv data
+        
         data = conn.recv(self._buffer_size)
 
-        # Continue if no data
         if not data:
           continue
 
-        # Load data with pickle
         data = pickle.loads(data)
 
-        # Match commands
         match data["CMD"]:
           case "ADDCHAMP":
             self.add_new_champ(data["Value"])
@@ -80,11 +79,9 @@ class DBHandler:
             matches = self.get_match_history(data["Value"])
             conn.send(pickle.dumps(matches))
 
-  # Champions
 
   def add_new_champ(self, champion):
     self.Champ_collection.insert_one(champion)
-
 
 
   def get_champs(self):
