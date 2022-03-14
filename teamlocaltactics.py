@@ -25,6 +25,12 @@ def print_available_champs(champions: dict[Champion]) -> None:
 
     print(available_champs)
 
+def print_welcome_msg():
+    print('\n'
+          'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
+          '\n'
+          'Each player choose a champion each time.'
+          '\n')
 
 def input_champion(prompt: str,
                    color: str,
@@ -43,8 +49,9 @@ def input_champion(prompt: str,
             case name if name in player2:
                 print(f'{name} is in the enemy team. Try again.')
             case _:
-                player1.append(name)
-                break
+                # player1.append(name)
+                # break
+                return name
 
 
 def print_match_summary(match: Match) -> None:
