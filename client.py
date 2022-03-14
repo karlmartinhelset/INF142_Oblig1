@@ -61,8 +61,8 @@ class PlayerClient:
     #     pc.turn_off()
 
 if __name__ == "__main__":
-    #host = socket.gethostbyname(socket.gethostname())
+    host = socket.gethostbyname(socket.gethostname())
     port = 5550
-    pc = PlayerClient("10.111.37.88", port)
+    pc = PlayerClient(host, port)
     pc.start_client()
     pc.turn_off()

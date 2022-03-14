@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 import certifi
+import socket
+from socket import create_server
+import pickle
 
 from core import Champion
 
@@ -14,11 +17,13 @@ class DBHandler:
     self._port = port
     self._buffer_size = buffer_size
     self._connections = []
+    self.Champ_collection = self.get_database()["Champions_collection"]
+    self.Match_collection = self.get_database()["Match_history_collection"]
 
 
   def start(self):
     self._serv_sock = create_server((self._host, self._port))
-     while True:
+    while True:
       try:
         conn, _ = self._serv_sock.accept()
       except:
@@ -46,8 +51,8 @@ class DBHandler:
     return database
 
 
-  Champ_collection = get_database()["Champions_collection"]
-  Match_collection = get_database()["Match_history_collection"]
+  # Champ_collection = get_database()["Champions_collection"]
+  # Match_collection = get_database()["Match_history_collection"]
 
   def get_msg(self):
     while True:
@@ -65,26 +70,26 @@ class DBHandler:
         # Match commands
         match data["CMD"]:
           case "ADDCHAMP":
-            add_new_champ(data["Value"])
+            self.add_new_champ(data["Value"])
           case "GETALLCHAMPS":
-            champs = get_champs()
+            champs = self.get_champs()
             conn.send(pickle.dumps(champs))
           case "UPLOADMATCH":
-            add_new_match(data["Value"])
+            self.add_new_match(data["Value"])
           case "GETMATCHES":
-            matches = getMatchHistory(data["Value"])
+            matches = self.get_match_history(data["Value"])
             conn.send(pickle.dumps(matches))
 
   # Champions
 
   def add_new_champ(self, champion):
-    Champ_collection.insert_one(champion)
+    self.Champ_collection.insert_one(champion)
 
 
 
   def get_champs(self):
     all_champions = {} 
-    for x in Champ_collection.find():
+    for x in self.Champ_collection.find():
         champion = Champion(x["Name"], float(x["rockProbability"]), float(x["paperProbability"]), float(x["scissorsProbability"]))
         all_champions[x["Name"]] = champion
     return all_champions
@@ -93,17 +98,17 @@ class DBHandler:
   # Match history
 
   def add_new_match(self, match):
-    Match_collection.insert_one(match)
+    self.Match_collection.insert_one(match)
 
 
   def get_match_history(self, nMatches):
-    matchList = Match_collection.find({}).limit(nMatches)
+    matchList = self.Match_collection.find({}).limit(nMatches)
     return matchList
 
 
 if __name__ == "__main__":
   server = os.environ.get("SERVER", "localhost")
   port = 7020
-  serv = DBServer(server, port)
+  serv = DBHandler(server, port)
   serv.start()
 

@@ -167,7 +167,7 @@ class server:
 if __name__ == "__main__":
     host = socket.gethostbyname(socket.gethostname())
     port = 5550
-    server = server("10.111.37.88", port)
+    server = server(host, port)
     server.turn_on()
     server.turn_off()
     
