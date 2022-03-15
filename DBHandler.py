@@ -12,10 +12,9 @@ from core import Champion
 # Function to get the database 
 class DBHandler:
 
-  def __init__(self, host: str, port: int, buffer_size: int = 2048) -> None:
+  def __init__(self, host: str, port: int):
     self._host = host
     self._port = port
-    self._buffer_size = buffer_size
     self._connections = []
     self.Champ_collection = self.get_database()["Champions_collection"]
     self.Match_collection = self.get_database()["Match_history_collection"]
@@ -23,18 +22,11 @@ class DBHandler:
 
   def start(self):
     self._serv_sock = create_server((self._host, self._port))
-    #self._serv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #self._serv_sock.bind((self._host, self._port))
+    
     while True:
-      try:
-        conn, _ = self._serv_sock.accept()
-      except:
-        pass 
-      else:
-        
-        self._connections.append(conn)
-        
-        self.get_msg()
+      conn, _ = self._serv_sock.accept()
+      self._connections.append(conn)
+      #self.upload_match
 
 
   def get_database(self):
@@ -42,7 +34,6 @@ class DBHandler:
     # Get you password from .env file
     password = os.getenv("PASSWORD")
 
-    username = "hannahmorken"
     clusterName = "Oblig1142Cluster"
 
     # Connect to you cluster
@@ -51,33 +42,6 @@ class DBHandler:
     # Create a new database in your cluster
     database = client["TeamNetworkTactics"]
     return database
-
-
-  # Champ_collection = get_database()["Champions_collection"]
-  # Match_collection = get_database()["Match_history_collection"]
-
-  def get_msg(self):
-    while True:
-      for conn in self._connections:
-        
-        data = conn.recv(self._buffer_size)
-
-        if not data:
-          continue
-
-        data = pickle.loads(data)
-
-        match data["CMD"]:
-          case "ADDCHAMP":
-            self.add_new_champ(data["Value"])
-          case "GETALLCHAMPS":
-            champs = self.get_champs()
-            conn.send(pickle.dumps(champs))
-          case "UPLOADMATCH":
-            self.add_new_match(data["Value"])
-          case "GETMATCHES":
-            matches = self.get_match_history(data["Value"])
-            conn.send(pickle.dumps(matches))
 
 
   def add_new_champ(self, champion):
@@ -92,7 +56,7 @@ class DBHandler:
     return all_champions
 
 
-  # Match history
+  # Matches
 
   def add_new_match(self, match):
     self.Match_collection.insert_one(match)

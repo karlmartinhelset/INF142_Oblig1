@@ -1,6 +1,8 @@
 import socket
 import pickle
 from core import Match, Team
+from DBHandler import DBHandler
+
 
 class server:
     
@@ -10,6 +12,7 @@ class server:
         self.connections = []
         self.team1 = []
         self.team2 = []
+
         
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((host, port))
@@ -26,26 +29,20 @@ class server:
         self.sock.close()
         print("Server is closed")
 
+
     def accept_conn(self):
         while True:
-            try:
-                conn, _ = self.sock.accept()
-            except:
-                pass
-            else:
-                self.connections.append(conn)
+            conn, _ = self.sock.accept()
+            
+            self.connections.append(conn)
 
-                if(len(self.connections) == 1):
-                    data = {
-                        "CMD": "MSG",
-                        "Value": "Waiting for other player"
-                    }
-                    #msg = "Not enough players! Waiting to start game ..."
-                    self.connections[0].send(pickle.dumps(data))
+            if(len(self.connections) == 1):
+                data = ("Waiting", "Waiting for other player")
+                self.connections[0].send(pickle.dumps(data))
                 
-                else:
-                    self.run_game()
-                    break
+            else:
+                self.run_game()
+                break
 
 
     def send_everyone(self, message):
@@ -55,26 +52,13 @@ class server:
 
     def get_team(self, nr):
         if nr == 1:
+            data = ("Choose player",f"Player {nr}" ,"red", self._champions, self.team1, self.team2)
             choosingIndex = 0
-            #sendIndex = 1
-            color = "red"
 
         else:
+            data = ("Choose player", f"Player {nr}", "blue", self._champions, self.team1, self.team2)
             choosingIndex = 1
-            #sendIndex = 0
-            color = "blue"
 
-        data = {
-            "CMD": "CHOOSE_CHAMP",
-            "Args": {
-                "Player": "Player " + str(nr),
-                "color": color,
-                "champs": self._champions,
-                "team1": self.team1,
-                "team2": self.team2,
-            }
-        }
-        
         self.connections[choosingIndex].send(pickle.dumps(data))
 
         while True:
@@ -91,27 +75,22 @@ class server:
 
 
     def run_game(self):
-        data = {
-            "CMD": "WELCOME"
-        }
+        data = ("Welcome", '\n'
+                'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
+                '\n'
+                'Each player choose a champion each time.'
+                '\n')
         # send message to each client
         self.send_everyone(data)
-
-        DBdata = {
-            "CMD": "GETALLCHAMPS"
-        }
-
-        # Ask the database connection to recieve all champions
-        self.DB_sock.send(pickle.dumps(DBdata))
-        self._champions = pickle.loads(self.DB_sock.recv(2048))
+        
+        DB = DBHandler(self.host, self.port)
 
         # fetch champions from database
-        #self.champions = DBHandler.get_champs()
+        self._champions = DB.get_champs()
+
         # create a table containing the champions
-        data = {
-            "CMD": "GET_CHAMPS",
-            "Value": self._champions
-        }
+        data = ("Get champs", self._champions)
+        
         # send table to each client
         self.send_everyone(data)
 
@@ -127,27 +106,17 @@ class server:
                 Team([self._champions[name] for name in self.team1]),
                 Team([self._champions[name] for name in self.team2])
             )
-        # play match. Use match.play()
+        # play match
         match.play()
 
         # get match result from team_local_tactics.print_match_summary(match)
-        data = {
-            "CMD": "PRINT_MATCH",
-            "Value": match
-        }
+        data = ("Print match", match)
+        
         # send result to client
         self.send_everyone(data)
 
-        #upload match result to database
-        DBdata = {
-            "CMD": "UPLOADMATCH",
-            "Value": match.to_dict()
-        }
-        
-        #DBHandler.add_new_match(match)
-        #self.send_everyone(match)
-        
-        self.DB_sock.send(pickle.dumps(DBdata))
+        # upload match result to database
+        DB.add_new_match(match.to_dict())
 
 
 if __name__ == "__main__":
