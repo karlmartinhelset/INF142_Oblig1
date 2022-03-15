@@ -7,17 +7,17 @@ from DBHandler import DBHandler
 class server:
     
     def __init__(self):
-        host = 'localhost'
-        port = 5550
+        self.host = 'localhost'
+        self.port = 5550
         self.connections = []
         self.team1 = []
         self.team2 = []
 
         
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind((host, port))
+        self.sock.bind((self.host, self.port))
         
-        self.DB_sock = socket.create_connection((host, 7020))
+        self.DB_sock = socket.create_connection((self.host, 7020))
         
         self.sock.listen()
         
