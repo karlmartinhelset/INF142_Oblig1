@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from random import random, shuffle
+import string
 
 _BEATS = {
     (1, 3),
@@ -215,11 +216,20 @@ class Match:
     def rounds(self) -> list[dict[str, PairThrow]]:
         return self._rounds
 
+    def winner(self):
+        if self._red_score > self._blue_score:
+            return "Red"
+        elif self._red_score < self._blue_score:
+            return "Blue"
+        else:
+            return "Draw"
+
     def to_dict(self):
         return {
             "Red": self.red_team.to_dict(),
             "Blue": self.blue_team.to_dict(),
             "n_rounds": self.n_rounds,
             "red_score": self.score[0],
-            "blue_score": self.score[1]
+            "blue_score": self.score[1],
+            "winner": self.winner()
         }
