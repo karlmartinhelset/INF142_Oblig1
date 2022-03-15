@@ -3,6 +3,7 @@ import socket
 import pickle
 
 import teamlocaltactics as tlt
+from rich import print
 
 class PlayerClient:
     
@@ -21,19 +22,36 @@ class PlayerClient:
     def turn_off(self):
         self.client.close
         print("Closed connection to server.")
+
     
     def get_msg(self):
         while True:
             data = self.client.recv(4098)
-            #print(not data)
 
             if not data:
                 continue
 
             data = pickle.loads(data)
-            #print(data)
 
-            match data["CMD"]:
+            if data[0] == "Waiting":
+                print(data[1])
+
+            elif data[0] == "Welcome":
+                print(data[1])
+
+            elif data[0] == "Choose player":
+                chosen = tlt.input_champion(data[1], data[2], data[3], data[4], data[5])
+                print(chosen)
+                self.client.send(chosen.encode())
+                
+            elif data[0] == "Get champs":
+                tlt.print_available_champs(data[1])
+                
+            elif data[0] == "Print match":
+                tlt.print_match_summary(data[1])
+                
+
+            """match data["CMD"]:
                 
                 case "MSG":
                     print(data["Value"])
@@ -51,7 +69,7 @@ class PlayerClient:
                     self.client.send(champ.encode())
                 
                 case "PRINT_MATCH":
-                    tlt.print_match_summary(data["Value"])
+                    tlt.print_match_summary(data["Value"])"""
 
 
                 
