@@ -135,7 +135,6 @@ class server:
         # Ask the database connection to recieve all champions
         self.DB_sock.send(pickle.dumps(DBdata))
         self._champions = pickle.loads(self.DB_sock.recv(2048))
-        print(self._champions)
 
         # fetch champions from database
         #self.champions = DBHandler.get_champs()

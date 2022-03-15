@@ -2,9 +2,9 @@
 
 from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
-
 from rich.prompt import Prompt
 from rich.table import Table
+from rich import print
 
 #testing branch ffff
 def print_available_champs(champions: dict[Champion]) -> None:
@@ -25,12 +25,6 @@ def print_available_champs(champions: dict[Champion]) -> None:
 
     print(available_champs)
 
-def print_welcome_msg():
-    print('\n'
-          'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
-          '\n'
-          'Each player choose a champion each time.'
-          '\n')
 
 def input_champion(prompt: str,
                    color: str,
@@ -97,6 +91,12 @@ def print_match_summary(match: Match) -> None:
     else:
         print('\nDraw :expressionless:')
 
+def print_welcome_msg():
+    print('\n'
+          'Welcome to [bold yellow]Team Local Tactics[/bold yellow]!'
+          '\n'
+          'Each player choose a champion each time.'
+          '\n')
 
 def main() -> None:
 
