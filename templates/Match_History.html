@@ -14,11 +14,15 @@
         <h1>Match History:</h1>
         <table>
             <tr>
-            <th></th>
+            <th>Red Team</th>
+            <th>Blue Team</th>
+            <th>Winner</th>
             </tr>
             {% for match in match %}
             <tr>
-            <td>{{ champions['Name']}}</td>
+            <td>{{ match['red_score']}}</td>
+            <td>{{ match['blue_score']}}</td>
+            <td>{{ match['winner']}}</td>
             </tr>
             {% endfor %}
         </table>
