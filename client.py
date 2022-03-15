@@ -13,14 +13,14 @@ class PlayerClient:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((host, port))
 
-        self.get_msg()
+        self.get_data()
     
     def turn_off(self):
         self.client.close
         print("Closed connection to server.")
 
     
-    def get_msg(self):
+    def get_data(self):
         while True:
             data = self.client.recv(4098)
 
