@@ -3,25 +3,27 @@ import pickle
 from core import Match, Team
 from DBHandler import DBHandler
 
+
 class server:
     
-    def __init__(self, host: str, port: int):
-        self.host = host
-        self.port = port
+    def __init__(self):
+        host = 'localhost'
+        port = 5550
         self.connections = []
         self.team1 = []
         self.team2 = []
 
-    def turn_on(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind((self.host, self.port))
         
-        self.DB_sock = socket.create_connection((self.host, 7020))
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.bind((host, port))
+        
+        self.DB_sock = socket.create_connection((host, 7020))
         
         self.sock.listen()
-        print("Looking for connection")
+        
+        print("Waiting for players to start game")
+        
         self.accept_conn()
-
 
     def turn_off(self):
         self.sock.close()
@@ -40,6 +42,7 @@ class server:
                 
             else:
                 self.run_game()
+                break
 
 
     def send_everyone(self, message):
@@ -117,10 +120,6 @@ class server:
 
 
 if __name__ == "__main__":
-    #host = socket.gethostbyname(socket.gethostname())
-    host = 'localhost'
-    port = 5550
-    servr = server(host, port)
-    servr.turn_on()
+    servr = server()
     servr.turn_off()
     

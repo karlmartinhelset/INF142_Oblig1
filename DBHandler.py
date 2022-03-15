@@ -66,10 +66,17 @@ class DBHandler:
     matchList = self.Match_collection.find({}).limit(nMatches)
     return matchList
 
+def db_main():
+  host = 'localhost'
+  port = 7020
+  serv = DBHandler(host, port)
+  serv.start()
+
 
 if __name__ == "__main__":
-  server = os.environ.get("SERVER", "localhost")
-  port = 7020
-  serv = DBHandler(server, port)
-  serv.start()
+  db_main()
+  # host = 'localhost'
+  # port = 7020
+  # serv = DBHandler(host, port)
+  # serv.start()
 

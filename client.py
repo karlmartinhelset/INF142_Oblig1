@@ -6,16 +6,12 @@ import teamlocaltactics as tlt
 from rich import print
 
 class PlayerClient:
-    
-    def __init__(self, host, port):
         
-        self.host = host
-        self.port = port
-        #self.addr = (self.server, self.port)
-    
-    def start_client(self):
+    def __init__(self):
+        host = 'localhost'
+        port = 5550
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect((self.host, self.port))
+        self.client.connect((host, port))
 
         self.get_msg()
     
@@ -49,12 +45,8 @@ class PlayerClient:
                 
             elif data[0] == "Print match":
                 tlt.print_match_summary(data[1])
-            
+         
 
 if __name__ == "__main__":
-    #host = socket.gethostbyname(socket.gethostname())
-    host = 'localhost'
-    port = 5550
-    pc = PlayerClient(host, port)
-    pc.start_client()
-    pc.turn_off()
+    
+    playerclient = PlayerClient()
