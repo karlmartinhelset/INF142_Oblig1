@@ -5,16 +5,12 @@ import pickle
 import teamlocaltactics as tlt
 
 class PlayerClient:
-    
-    def __init__(self, host, port):
         
-        self.host = host
-        self.port = port
-        #self.addr = (self.server, self.port)
-    
-    def start_client(self):
+    def __init__(self):
+        host = 'localhost'
+        port = 5550
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect((self.host, self.port))
+        self.client.connect((host, port))
 
         self.get_msg()
     
@@ -52,21 +48,8 @@ class PlayerClient:
                 
                 case "PRINT_MATCH":
                     tlt.print_match_summary(data["Value"])
-
-
                 
 
-    # def main_client():
-    #     host = socket.gethostbyname(socket.gethostname())
-    #     port = 5550
-    #     pc = PlayerClient(host, port)
-    #     pc.start_client()
-    #     pc.turn_off()
-
 if __name__ == "__main__":
-    #host = socket.gethostbyname(socket.gethostname())
-    host = 'localhost'
-    port = 5550
-    pc = PlayerClient(host, port)
-    pc.start_client()
-    pc.turn_off()
+    
+    playerclient = PlayerClient()

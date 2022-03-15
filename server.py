@@ -1,46 +1,26 @@
 import socket
-#from threading import Lock, Thread
-from socket import create_server
-from unittest.main import main
-from xmlrpc.client import Server
-
-import teamlocaltactics 
-import DBHandler
-from DBHandler import *
-
 import pickle
-
-from rich import print
-
 from core import Match, Team
-from core import *
-
 
 class server:
     
-    def __init__(self, host: str, port: int):
-        self.host = host
-        self.port = port
+    def __init__(self):
+        host = 'localhost'
+        port = 5550
         self.connections = []
         self.team1 = []
         self.team2 = []
-
-    def turn_on(self):
-        #self.sock = create_server((self.host, self.port), reuse_port=True)
         
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind((self.host, self.port))
+        self.sock.bind((host, port))
         
-
-        print("hei")
-        
-        self.DB_sock = socket.create_connection((self.host, 7020))
+        self.DB_sock = socket.create_connection((host, 7020))
         
         self.sock.listen()
-        print("Looking for connection")
-        #self.serving = True
+        
+        print("Waiting for players to start game")
+        
         self.accept_conn()
-
 
     def turn_off(self):
         self.sock.close()
@@ -65,18 +45,7 @@ class server:
                 
                 else:
                     self.run_game()
-
-        #     match len(self.connections):
-        #         case 1:
-        #             #self.connections[0].send("Not enough players! Waiting to start game ...".encode())
-        #             msg = "Not enough players! Waiting to start game ..."
-        #             self.connections[0].send(pickle.dumps(msg))
-        #         case 2:
-        #             print("Enough players connected! Starting the game...")
-        #             break
-
-        # self.run_game()
-
+                    break
 
 
     def send_everyone(self, message):
@@ -180,19 +149,8 @@ class server:
         
         self.DB_sock.send(pickle.dumps(DBdata))
 
-    # def main_server(self):
-    #     host = socket.gethostbyname(socket.gethostname())
-    #     port = 5550
-    #     server = server(host, port)
-    #     server.turn_on()
-    #     server.turn_off()
-
 
 if __name__ == "__main__":
-    #host = socket.gethostbyname(socket.gethostname())
-    host = 'localhost'
-    port = 5550
-    servr = server(host, port)
-    servr.turn_on()
+    servr = server()
     servr.turn_off()
     
