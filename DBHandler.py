@@ -4,30 +4,27 @@ load_dotenv()
 import os
 import certifi
 import socket
-from socket import create_server
-import pickle
 
 from core import Champion
 
-# Function to get the database 
 class DBHandler:
 
-  def __init__(self, host: str, port: int):
-    self._host = host
-    self._port = port
+  def __init__(self, host1: str, port1: int):
+    self._host = host1
+    self._port = port1
     self._connections = []
     self.Champ_collection = self.get_database()["Champions_collection"]
     self.Match_collection = self.get_database()["Match_history_collection"]
 
-
   def start(self):
-    self._serv_sock = create_server((self._host, self._port))
-    
-    while True:
-      conn, _ = self._serv_sock.accept()
-      self._connections.append(conn)
-      #self.upload_match
 
+    self.serv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    self.serv_sock.bind((self._host, self._port))
+    self.serv_sock.listen()
+   
+    while True:
+      conn, _ = self.serv_sock.accept()
+      self._connections.append(conn)
 
   def get_database(self):
 
@@ -72,11 +69,5 @@ def db_main():
   serv = DBHandler(host, port)
   serv.start()
 
-
 if __name__ == "__main__":
   db_main()
-  # host = 'localhost'
-  # port = 7020
-  # serv = DBHandler(host, port)
-  # serv.start()
-

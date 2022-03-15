@@ -12,7 +12,6 @@ class server:
         self.connections = []
         self.team1 = []
         self.team2 = []
-
         
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
@@ -24,9 +23,8 @@ class server:
         print("Waiting for players to start game")
         
         self.accept_conn()
-
-    def turn_off(self):
         self.sock.close()
+
         print("Server is closed")
 
 
@@ -84,7 +82,7 @@ class server:
         self.send_everyone(data)
         
         DB = DBHandler(self.host, self.port)
-
+        
         # fetch champions from database
         self._champions = DB.get_champs()
 
@@ -121,5 +119,4 @@ class server:
 
 if __name__ == "__main__":
     servr = server()
-    servr.turn_off()
     
