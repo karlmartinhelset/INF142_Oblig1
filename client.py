@@ -39,7 +39,7 @@ class PlayerClient:
                     print(data["Value"])
                 
                 case "WELCOME":
-                    tlt.print_welcome_msg
+                    tlt.print_welcome_msg()
                     
                 case "GET_CHAMPS":
                     tlt.print_available_champs(data["Value"])
