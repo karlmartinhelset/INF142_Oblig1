@@ -7,15 +7,29 @@
             table,th,
             td {
             border: 1px solid black;
+            font-size: 25px;
             }
+            #red {
+                color:red;
+            }
+            #blue {
+                color: blue;
+            }
+            a{
+                text-decoration: none;
+            }
+            footer{
+                font-size: 20px;
+            }
+
         </style>
     </head>
     <body>
         <h1>Match History:</h1>
         <table>
             <tr>
-            <th>Red Team</th>
-            <th>Blue Team</th>
+            <th id="red">Red Team</th>
+            <th id="blue">Blue Team</th>
             <th>Winner</th>
             </tr>
             {% for match in match %}
@@ -25,6 +39,7 @@
             <td>{{ match['winner']}}</td>
             </tr>
             {% endfor %}
-        </table>
+        </table><br>
+        <footer><a href="../">Back</a></footer>
     </body>
 </html>
