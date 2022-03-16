@@ -1,4 +1,4 @@
-#from copyreg import pickle
+
 import socket
 import pickle
 
@@ -10,6 +10,8 @@ class PlayerClient:
     def __init__(self):
         host = 'localhost'
         port = 5550
+
+        # create and connect socket
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((host, port))
 
@@ -23,6 +25,7 @@ class PlayerClient:
     
     def get_data(self):
         while True:
+            # recieve data from socket
             data = self.client.recv(4098)
 
             if not data:
@@ -30,6 +33,7 @@ class PlayerClient:
 
             data = pickle.loads(data)
 
+            # different actions based on the messages the client has recieved
             if data[0] == "Waiting":
                 print(data[1])
 
@@ -49,5 +53,3 @@ class PlayerClient:
 
 if __name__ == "__main__":
     PlayerClient()
-    
-    
