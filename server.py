@@ -1,7 +1,7 @@
 import socket
 import pickle
 from core import Match, Team
-from DBHandler import DBHandler
+from database_server import DBHandler
 
 
 class server:
@@ -51,16 +51,16 @@ class server:
     def get_team(self, nr):
         if nr == 1:
             data = ("Choose player",f"Player {nr}" ,"red", self._champions, self.team1, self.team2)
-            choosingIndex = 0
+            indx = 0
 
-        else:
+        elif nr == 2:
             data = ("Choose player", f"Player {nr}", "blue", self._champions, self.team1, self.team2)
-            choosingIndex = 1
+            indx = 1
 
-        self.connections[choosingIndex].send(pickle.dumps(data))
+        self.connections[indx].send(pickle.dumps(data))
 
         while True:
-            champ = self.connections[choosingIndex].recv(1024).decode()
+            champ = self.connections[indx].recv(1024).decode()
 
             if not champ:
                 continue
