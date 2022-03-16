@@ -3,28 +3,14 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 import certifi
-import socket
 
 from core import Champion
 
 class DBHandler:
 
-  def __init__(self, host1: str, port1: int):
-    self._host = host1
-    self._port = port1
-    self._connections = []
+  def __init__(self):
     self.Champ_collection = self.get_database()["Champions_collection"]
     self.Match_collection = self.get_database()["Match_history_collection"]
-
-  def conn_accept(self):
-
-    self.serv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.serv_sock.bind((self._host, self._port))
-    self.serv_sock.listen()
-   
-    while True:
-      conn, _ = self.serv_sock.accept()
-      self._connections.append(conn)
 
   def get_database(self):
 
@@ -52,7 +38,6 @@ class DBHandler:
         all_champions[x["Name"]] = champion
     return all_champions
 
-
   # Matches
 
   def add_new_match(self, match):
@@ -64,10 +49,8 @@ class DBHandler:
     return matchList
 
 def db_main():
-  host = 'localhost'
-  port = 7020
-  serv = DBHandler(host, port)
-  serv.conn_accept()
+  while True:
+    DBHandler()
 
 if __name__ == "__main__":
   db_main()
