@@ -15,9 +15,6 @@ class server:
         
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
-        
-        self.DB_sock = socket.create_connection((self.host, 7020))
-        
         self.sock.listen()
         
         print("Waiting for players to start game")
@@ -25,8 +22,7 @@ class server:
         self.accept_conn()
         self.sock.close()
 
-        print("Server is closed")
-
+        print("Server is now closed")
 
     def accept_conn(self):
         while True:
@@ -60,14 +56,15 @@ class server:
         self.connections[indx].send(pickle.dumps(data))
 
         while True:
-            champ = self.connections[indx].recv(1024).decode()
+            champ = self.connections[indx].recv(1024)
+            champ = pickle.loads(champ)
 
             if not champ:
                 continue
             
             if nr == 1:
                 self.team1.append(champ)
-            else:
+            elif nr == 2:
                 self.team2.append(champ)
             break
 
@@ -81,7 +78,8 @@ class server:
         # send message to each client
         self.send_everyone(data)
         
-        DB = DBHandler(self.host, self.port)
+        #Create database object
+        DB = DBHandler()
         
         # fetch champions from database
         self._champions = DB.get_champs()
@@ -118,5 +116,5 @@ class server:
 
 
 if __name__ == "__main__":
-    servr = server()
+    server()
     
