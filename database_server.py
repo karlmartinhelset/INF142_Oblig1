@@ -16,7 +16,7 @@ class DBHandler:
     self.Champ_collection = self.get_database()["Champions_collection"]
     self.Match_collection = self.get_database()["Match_history_collection"]
 
-  def start(self):
+  def conn_accept(self):
 
     self.serv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.serv_sock.bind((self._host, self._port))
@@ -67,7 +67,7 @@ def db_main():
   host = 'localhost'
   port = 7020
   serv = DBHandler(host, port)
-  serv.start()
+  serv.conn_accept()
 
 if __name__ == "__main__":
   db_main()
