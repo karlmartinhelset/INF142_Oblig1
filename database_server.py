@@ -26,11 +26,6 @@ class DBHandler:
     database = client["TeamNetworkTactics"]
     return database
 
-
-  def add_new_champ(self, champion):
-    self.Champ_collection.insert_one(champion)
-
-
   def get_champs(self):
     all_champions = {} 
     for x in self.Champ_collection.find():
@@ -38,15 +33,8 @@ class DBHandler:
         all_champions[x["Name"]] = champion
     return all_champions
 
-  # Matches
-
   def add_new_match(self, match):
     self.Match_collection.insert_one(match)
-
-
-  def get_match_history(self, nMatches):
-    matchList = self.Match_collection.find({}).limit(nMatches)
-    return matchList
 
 def db_main():
   while True:

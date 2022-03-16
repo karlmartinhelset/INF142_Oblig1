@@ -61,13 +61,13 @@ class server:
 
             if not champ:
                 continue
-            
             if nr == 1:
                 self.team1.append(champ)
+
             elif nr == 2:
                 self.team2.append(champ)
             break
-
+            
 
     def run_game(self):
         data = ("Welcome", '\n'
