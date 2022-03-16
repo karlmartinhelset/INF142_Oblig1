@@ -70,6 +70,7 @@ class Champion:
         total = rock + paper + scissors
         self._rock = rock / total
         self._paper = paper / total
+        self._scissors = 1 - (self._paper + self._rock)
 
     @property
     def name(self) -> str:
@@ -117,14 +118,16 @@ class Champion:
     def __repr__(self) -> str:
         return (f'{self._name:10}|   {self._rock:.2f}   |   '
                 f'{self._paper:.2f}   |   {(1-self._rock-self._paper):.2f}')
-#########
-    def to_dict(self):
+
+
+    def to_dictionary(self):
         return {
             "Name": self._name,
             "rock": self._rock,
             "paper": self._paper,
-            "scissors": round((1 - (self._paper + self._rock)), 2)
-        }    
+            "scissors": self._scissors
+        }  
+
 
 
 def pair_throw(red_champ: Champion,
@@ -163,14 +166,9 @@ class Team:
     champions: list[Champion]
 
     def __iter__(self) -> list[Champion]:
+        champs = []
         shuffle(self.champions)
         return iter(self.champions)
-#########
-    def to_dict(self):
-        liste = []
-        for champ in self.champions:
-            liste.append(champ.to_dict())
-        return liste
 
 
 @dataclass
@@ -224,12 +222,20 @@ class Match:
         else:
             return "Draw"
 
-    def to_dict(self):
+    def result(self):
+        blue = []
+        for champ in self.blue_team:
+            blue.append(champ.to_dictionary())
+
+        red = []
+        for champ in self.red_team:
+            red.append(champ.to_dictionary())
+
         return {
-            "Red": self.red_team.to_dict(),
-            "Blue": self.blue_team.to_dict(),
+            "Red": red,
+            "Blue": blue,
             "n_rounds": self.n_rounds,
-            "red_score": self.score[0],
-            "blue_score": self.score[1],
+            "red_score": self._red_score,
+            "blue_score": self._blue_score,
             "winner": self.winner()
         }

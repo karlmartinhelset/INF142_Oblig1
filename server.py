@@ -123,7 +123,7 @@ class server:
         self.send_everyone(msg)
 
         # upload match result to database
-        DB.add_new_match(match.to_dict())
+        DB.add_new_match(match.result())
 
 
 if __name__ == "__main__":
