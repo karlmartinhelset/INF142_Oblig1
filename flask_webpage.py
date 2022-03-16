@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from dotenv import load_dotenv
 load_dotenv()
-from DBHandler import DBHandler
+from database_server import DBHandler
 
 
 
@@ -13,13 +13,13 @@ def index():
 
 @app.route('/Match_History/')
 def Match_History():
-    DB = DBHandler('localhost', 5550)
+    DB = DBHandler()
     match = DB.Match_collection.find({})
     return render_template('Match_History.html', match = match)
 
 @app.route('/Champions/')
 def Champions():
-    DB = DBHandler('localhost', 5550)
+    DB = DBHandler()
     champions = DB.Champ_collection.find({})
     return render_template('Champions.html', champions = champions)
 

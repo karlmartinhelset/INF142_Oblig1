@@ -16,6 +16,7 @@ class PlayerClient:
         self.client.connect((host, port))
 
         self.get_data()
+        
     
     def turn_off(self):
         self.client.close
@@ -41,8 +42,7 @@ class PlayerClient:
 
             elif data[0] == "Choose player":
                 chosen = tlt.input_champion(data[1], data[2], data[3], data[4], data[5])
-                print(chosen)
-                self.client.send(chosen.encode())
+                self.client.send(pickle.dumps(chosen))
                 
             elif data[0] == "Get champs":
                 tlt.print_available_champs(data[1])
@@ -52,4 +52,4 @@ class PlayerClient:
          
 
 if __name__ == "__main__":
-    playerclient = PlayerClient()
+    PlayerClient()

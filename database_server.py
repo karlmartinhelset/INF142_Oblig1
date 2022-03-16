@@ -3,23 +3,20 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 import certifi
-import socket
 
 from core import Champion
 
 class DBHandler:
 
   def __init__(self):
-    
     # collection in the database created in get_database() where chamions are stored
     self.Champ_collection = self.get_database()["Champions_collection"]
 
     # collection in the database created in get_database() where match history is stored
     self.Match_collection = self.get_database()["Match_history_collection"]
 
-
+    
   def get_database(self):
-
     # Get the password from .env file
     password = os.getenv("PASSWORD")
 
@@ -32,11 +29,7 @@ class DBHandler:
     database = client["TeamNetworkTactics"]
     return database
 
-
-  def add_new_champ(self, champion):
-    self.Champ_collection.insert_one(champion)
-
-
+  
   def get_champs(self):
     all_champions = {} 
 
@@ -47,17 +40,18 @@ class DBHandler:
         
         # add champion to new dict
         all_champions[x["Name"]] = champion
-
+        
     return all_champions
-
-
+  
+  
   def add_new_match(self, match):
     self.Match_collection.insert_one(match)
 
-
-  def get_match_history(self, nMatches):
-    return self.Match_collection.find({}).limit(nMatches)
-
+    
+def db_main():
+  while True:
+    DBHandler()
 
 if __name__ == "__main__":
-  serv = DBHandler()
+  db_main()
+

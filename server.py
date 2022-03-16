@@ -27,7 +27,7 @@ class server:
 
         # close socket
         self.sock.close()
-        print("Server is closed")
+        print("Server is now closed")
 
 
     def accept_conn(self):
@@ -69,18 +69,20 @@ class server:
 
         while True:
             # fetch the chosen player
-            champ = self.connections[indx].recv(1024).decode()
+            champ = self.connections[indx].recv(1024)
+            champ = pickle.loads(champ)
 
             if not champ:
                 continue
-            
+
             # adds the player to the right team
             if nr == 1:
                 self.team1.append(champ)
-            else:
+
+            elif nr == 2:
                 self.team2.append(champ)
             break
-
+            
 
     def run_game(self):
         msg = ("Welcome", '\n'
@@ -91,7 +93,7 @@ class server:
         # send welcome message to each client
         self.send_everyone(msg)
         
-        # create new DBHandler-object
+        #Create database object
         DB = DBHandler()
         
         # fetch champions from database
@@ -125,5 +127,5 @@ class server:
 
 
 if __name__ == "__main__":
-    servr = server()
+    server()
     
